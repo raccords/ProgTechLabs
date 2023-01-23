@@ -95,7 +95,7 @@ public class MainWindow {
         @Override
         public void actionPerformed(ActionEvent evt) {
             dialogFrame = new JFrame("EditDialog");
-            dialogFrame.setContentPane(new EditRecordDialog(dbUtils).MainPanel);
+            dialogFrame.setContentPane(new EditRecordDialog(dbUtils,closeListener).MainPanel);
             dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             dialogFrame.setLocationRelativeTo(null);
             dialogFrame.pack();
