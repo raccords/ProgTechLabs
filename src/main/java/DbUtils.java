@@ -215,7 +215,7 @@ public class DbUtils {
     }
 
     public void deleteTraining(int id) throws SQLException {
-        var statement = con.prepareStatement("DELETE FROM results WHERE training_id = ?");
+        var statement = con.prepareStatement("DELETE FROM training WHERE training_id = ?");
         statement.setInt(1, id);
         statement.execute();
     }
