@@ -8,7 +8,6 @@ public class Trainer {
     public String f_name;
     public String s_name;
     public Date birthDate;
-    public int pk_participant;
 
     public Trainer(Date birthDate, String f_name, String s_name, String rank) {
         this.f_name = f_name;

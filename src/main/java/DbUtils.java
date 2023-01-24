@@ -3,13 +3,10 @@ import model.Result;
 import model.Trainer;
 import model.Training;
 
-import java.io.Console;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.sql.DriverManager;
 
 public class DbUtils {
     private static Connection con;
@@ -117,8 +114,6 @@ public class DbUtils {
     }
 
 
-
-
     public ArrayList<Participant> getParticipants() throws SQLException {
         var statement = con.prepareStatement("SELECT participants.height,\n" +
                 "    participants.weight,\n" +
@@ -218,6 +213,7 @@ public class DbUtils {
         statement.setInt(1, id);
         statement.execute();
     }
+
     public void deleteTraining(int id) throws SQLException {
         var statement = con.prepareStatement("DELETE FROM results WHERE training_id = ?");
         statement.setInt(1, id);

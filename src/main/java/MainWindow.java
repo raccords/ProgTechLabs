@@ -17,11 +17,11 @@ public class MainWindow {
     private JCheckBox onlyViewsBox1;
     private JButton addNewRecordButton;
     private JButton editRecordButton;
-    private DbUtils dbUtils;
+    private final DbUtils dbUtils;
 
     private JFrame dialogFrame;
 
-    private ActionListener closeListener;
+    private final ActionListener closeListener;
 
     public MainWindow() {
 
@@ -40,67 +40,6 @@ public class MainWindow {
         reloadButton.addActionListener(loadTablesListener);
         addNewRecordButton.addActionListener(addNewRecordListener);
         editRecordButton.addActionListener(editRecordListener);
-    }
-
-    private void populateComboBox() {
-        try {
-            var ls = dbUtils.getDbList(onlyViewsBox1.isSelected());
-            comboBox1.setModel(new DefaultComboBoxModel<String>(ls.toArray(new String[0])));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    private class LoadTableListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            try {
-                ResultSet rs = DbUtils.getTable(String.valueOf(comboBox1.getSelectedItem()));
-                table1.setModel(buildTableModel(rs));
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    private class CloseDialogListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            dialogFrame.dispose();
-        }
-    }
-
-    private class LoadTablesListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            populateComboBox();
-        }
-    }
-
-
-    private class AddNewRecordListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            dialogFrame = new JFrame("AddDialog");
-            dialogFrame.setContentPane(new AddRecrodDialog(dbUtils, closeListener).MainPanel);
-            dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            dialogFrame.setLocationRelativeTo(null);
-            dialogFrame.pack();
-            dialogFrame.setVisible(true);
-        }
-    }
-
-    private class EditRecordListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            dialogFrame = new JFrame("EditDialog");
-            dialogFrame.setContentPane(new EditRecordDialog(dbUtils,closeListener).MainPanel);
-            dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            dialogFrame.setLocationRelativeTo(null);
-            dialogFrame.pack();
-            dialogFrame.setVisible(true);
-        }
     }
 
     public static DefaultTableModel buildTableModel(ResultSet rs)
@@ -137,6 +76,65 @@ public class MainWindow {
         frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private void populateComboBox() {
+        try {
+            var ls = dbUtils.getDbList(onlyViewsBox1.isSelected());
+            comboBox1.setModel(new DefaultComboBoxModel<String>(ls.toArray(new String[0])));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private class LoadTableListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            try {
+                ResultSet rs = DbUtils.getTable(String.valueOf(comboBox1.getSelectedItem()));
+                table1.setModel(buildTableModel(rs));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private class CloseDialogListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            dialogFrame.dispose();
+        }
+    }
+
+    private class LoadTablesListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            populateComboBox();
+        }
+    }
+
+    private class AddNewRecordListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            dialogFrame = new JFrame("AddDialog");
+            dialogFrame.setContentPane(new AddRecordDialog(dbUtils, closeListener).MainPanel);
+            dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            dialogFrame.setLocationRelativeTo(null);
+            dialogFrame.pack();
+            dialogFrame.setVisible(true);
+        }
+    }
+
+    private class EditRecordListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            dialogFrame = new JFrame("EditDialog");
+            dialogFrame.setContentPane(new EditRecordDialog(dbUtils, closeListener).MainPanel);
+            dialogFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            dialogFrame.setLocationRelativeTo(null);
+            dialogFrame.pack();
+            dialogFrame.setVisible(true);
+        }
     }
 }
 

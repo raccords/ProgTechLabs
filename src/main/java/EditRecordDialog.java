@@ -10,11 +10,13 @@ import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Properties;
 
 public class EditRecordDialog {
     private final DbUtils dbUtils;
@@ -26,13 +28,12 @@ public class EditRecordDialog {
     private JButton editRecordButton;
     private JTabbedPane tabbedPane;
     private JPanel trainerPane;
-    private JPanel trainingPane;
     private JComboBox participantTrainingComboBox;
     private JComboBox trainerTrainingComboBox;
     private JTextField trainerFNameField;
     private JTextField trainerLNameField;
     private JTextField trainerRankField;
-    private JPanel paticipantPane;
+    private JPanel participantPane;
     private JTextField participantRankField;
     private JTextField participantLNameField;
     private JTextField participantFNameField;
@@ -46,29 +47,16 @@ public class EditRecordDialog {
     private JDatePickerImpl resultDatePickerImpl;
     private JButton deleteButton;
     private JComboBox participantParticipantComboBox;
-    private JComboBox trainerTrainerCombobox;
+    private JComboBox trainerTrainerComboBox;
     private JComboBox trainingTrainingComboBox;
-    private JComboBox resultResultCombobox;
-
-    private ActionListener closeListener;
+    private JComboBox resultResultComboBox;
 
 
     public EditRecordDialog(DbUtils dbUtil, ActionListener closeListener) {
         this.dbUtils = dbUtil;
-        this.closeListener = closeListener;
-        editRecordButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                editRecord();
-            }
-        });
+        editRecordButton.addActionListener(e -> editRecord());
         editRecordButton.addActionListener(closeListener);
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteRecord();
-            }
-        });
+        deleteButton.addActionListener(e -> deleteRecord());
         deleteButton.addActionListener(closeListener);
         try {
             Participants = dbUtils.getParticipants();
@@ -80,22 +68,12 @@ public class EditRecordDialog {
             participantParticipantComboBox.setModel(new DefaultComboBoxModel<>(Participants.toArray()));
             participantResultComboBox.setModel(new DefaultComboBoxModel<>(Participants.toArray()));
             participantParticipantComboBox.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            updateParticipantFields();
-                        }
-                    }
+                    e -> updateParticipantFields()
             );
             trainerTrainingComboBox.setModel(new DefaultComboBoxModel<>(Trainers.toArray()));
-            trainerTrainerCombobox.setModel(new DefaultComboBoxModel<>(Trainers.toArray()));
-            trainerTrainerCombobox.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            updateTrainerFields();
-                        }
-                    }
+            trainerTrainerComboBox.setModel(new DefaultComboBoxModel<>(Trainers.toArray()));
+            trainerTrainerComboBox.addActionListener(
+                    e -> updateTrainerFields()
             );
 
             trainingTrainingComboBox.setModel(new DefaultComboBoxModel<>(Trainings.stream()
@@ -105,28 +83,18 @@ public class EditRecordDialog {
                     ).toArray()));
             //делаем более красивое представление для внешних ключей
             trainingTrainingComboBox.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            updateTrainingFields();
-                        }
-                    }
+                    e -> updateTrainingFields()
             );
 
 
-            resultResultCombobox.setModel(new DefaultComboBoxModel<>(Results.stream()
+            resultResultComboBox.setModel(new DefaultComboBoxModel<>(Results.stream()
                     .map(result ->
                             Participants.stream().filter(participant -> participant.pk_participant == result.fk_participant).findFirst().get() + "" +
                                     result.date + " " +
                                     result.score + "pts.").
                     toArray()));
-            resultResultCombobox.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            updateResultFields();
-                        }
-                    }
+            resultResultComboBox.addActionListener(
+                    e -> updateResultFields()
             );
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -171,7 +139,7 @@ public class EditRecordDialog {
     }
 
     public void updateTrainerFields() {
-        var trainer = Trainers.get(trainerTrainerCombobox.getSelectedIndex());
+        var trainer = Trainers.get(trainerTrainerComboBox.getSelectedIndex());
         DateModel<Date> dateModel = (DateModel<Date>) trainerBirthDatePicker.getModel();
         dateModel.setValue(trainer.birthDate);
         trainerBirthDatePicker.getModel().setSelected(true);
@@ -190,7 +158,7 @@ public class EditRecordDialog {
     }
 
     public void updateResultFields() {
-        var result = Results.get(resultResultCombobox.getSelectedIndex());
+        var result = Results.get(resultResultComboBox.getSelectedIndex());
         participantResultComboBox.setSelectedItem(
                 Participants.stream().filter(participant -> participant.pk_participant == result.fk_participant).findFirst().get());
         DateModel<Date> dateModel = (DateModel<Date>) resultDatePickerImpl.getModel();
@@ -203,10 +171,10 @@ public class EditRecordDialog {
     public void editRecord() {
         try {
             switch (tabbedPane.getSelectedIndex()) {
-                case 0: {
-                    if (Arrays.stream(paticipantPane.getComponents())
+                case 0 -> {
+                    if (Arrays.stream(participantPane.getComponents())
                             .filter(c -> c instanceof JTextField)
-                            .map(c -> ((JTextField) c).getText()).anyMatch(f -> f.isBlank()) ||
+                            .map(c -> ((JTextField) c).getText()).anyMatch(String::isBlank) ||
                             participantBirthDatePicker.getModel().getValue() == null) {
                         showMessage("Bad data, check fields");
                         return;
@@ -223,12 +191,11 @@ public class EditRecordDialog {
                                     participantRankField.getText(),
                                     Participants.get(participantParticipantComboBox.getSelectedIndex()).pk_participant)
                     );
-                    break;
                 }
-                case 1: {
+                case 1 -> {
                     if (Arrays.stream(trainerPane.getComponents())
                             .filter(c -> c instanceof JTextField)
-                            .map(c -> ((JTextField) c).getText()).anyMatch(f -> f.isBlank()) ||
+                            .map(c -> ((JTextField) c).getText()).anyMatch(String::isBlank) ||
                             trainerBirthDatePicker.getModel().getValue() == null) {
                         showMessage("Bad data, check fields");
                         return;
@@ -243,33 +210,30 @@ public class EditRecordDialog {
                                     participantRankField.getText(),
                                     Trainers.get(participantParticipantComboBox.getSelectedIndex()).pk_trainer)
                     );
-                    break;
                 }
-                case 2: {
+                case 2 -> {
                     var training = new Training(
                             Trainings.get(trainingTrainingComboBox.getSelectedIndex()).pk_training,
                             Trainers.get(trainerTrainingComboBox.getSelectedIndex()).pk_trainer,
                             Participants.get(participantTrainingComboBox.getSelectedIndex()).pk_participant);
                     dbUtils.updateTraining(training);
-                    break;
                 }
-                case 3: {
+                case 3 -> {
                     if (Arrays.stream(resultsPane.getComponents())
                             .filter(c -> c instanceof JTextField)
-                            .map(c -> ((JTextField) c).getText()).anyMatch(f -> f.isBlank()) ||
+                            .map(c -> ((JTextField) c).getText()).anyMatch(String::isBlank) ||
                             resultDatePickerImpl.getModel().getValue() == null) {
                         showMessage("Bad data, check fields");
                         return;
                     }
                     var date = new java.sql.Date(((Date) participantBirthDatePicker.getModel().getValue()).getTime());
                     var result = new Result(
-                            Results.get(resultResultCombobox.getSelectedIndex()).pk_result,
+                            Results.get(resultResultComboBox.getSelectedIndex()).pk_result,
                             Participants.get(participantResultComboBox.getSelectedIndex()).pk_participant,
                             Integer.parseInt(scoreResultField.getText()),
                             date
                     );
                     dbUtils.updateResult(result);
-                    break;
                 }
             }
         } catch (SQLException e) {
@@ -282,30 +246,26 @@ public class EditRecordDialog {
     public void deleteRecord() {
         try {
             switch (tabbedPane.getSelectedIndex()) {
-                case 0: {
+                case 0 -> {
                     dbUtils.deleteParticipant(
                             Participants.get(participantParticipantComboBox.getSelectedIndex()).pk_participant
                     );
-                    break;
                 }
-                case 1: {
+                case 1 -> {
                     dbUtils.deleteTrainer(
                             Trainers.get(participantParticipantComboBox.getSelectedIndex()).pk_trainer
                     );
-                    break;
                 }
-                case 2: {
+                case 2 -> {
 
                     dbUtils.deleteTraining(
                             Participants.get(participantTrainingComboBox.getSelectedIndex()).pk_participant
                     );
-                    break;
                 }
-                case 3: {
+                case 3 -> {
                     dbUtils.deleteResult(
-                            Results.get(resultResultCombobox.getSelectedIndex()).pk_result
+                            Results.get(resultResultComboBox.getSelectedIndex()).pk_result
                     );
-                    break;
                 }
             }
         } catch (SQLException e) {

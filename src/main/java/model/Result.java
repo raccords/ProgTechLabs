@@ -14,7 +14,7 @@ public class Result {
         this.date = date;
     }
 
-    public Result(int pk_result,int fk_participant, int score, Date date) {
+    public Result(int pk_result, int fk_participant, int score, Date date) {
         this.pk_result = pk_result;
         this.fk_participant = fk_participant;
         this.score = score;
