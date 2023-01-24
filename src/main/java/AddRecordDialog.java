@@ -31,8 +31,13 @@ public class AddRecordDialog {
     private JTextField participantRank;
     private JTextField participantLName;
     private JTextField participantFName;
+
     private JDatePickerImpl participantBirthDatePicker;
     private JDatePickerImpl trainerBirthDatePicker;
+    private JTextField trainerFNameField;
+    private JTextField trainerLNameField;
+    private JTextField trainerRankField;
+    private JPanel trainingPane;
     private JFormattedTextField weightField;
     private JFormattedTextField heightField;
     private JPanel resultsPane;
@@ -112,9 +117,9 @@ public class AddRecordDialog {
                     dbUtils.insertTrainer(
                             new Trainer(
                                     date,
-                                    participantFName.getText(),
-                                    participantLName.getText(),
-                                    participantRank.getText()
+                                    trainerLNameField.getText(),
+                                    trainerFNameField.getText(),
+                                    trainerRankField.getText()
                             )
                     );
                 }

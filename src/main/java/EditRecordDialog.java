@@ -45,6 +45,7 @@ public class EditRecordDialog {
     private JComboBox participantResultComboBox;
     private JTextField scoreResultField;
     private JDatePickerImpl resultDatePickerImpl;
+    private JPanel trainingPane;
     private JButton deleteButton;
     private JComboBox participantParticipantComboBox;
     private JComboBox trainerTrainerComboBox;
