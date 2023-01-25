@@ -7,7 +7,6 @@ CREATE TABLE public.participants (
     rank character varying(120),
     f_name character varying(120),
     participant_id integer NOT NULL,
-    middle_name character varying(120)
 );
 
 CREATE VIEW public.participants_full AS
@@ -67,6 +66,7 @@ CREATE VIEW public.trainers_full AS
  SELECT trainers.s_name,
     trainers.f_name,
     trainers.birth_date
+    trainers_rank
    FROM public.trainers;
 
 
@@ -79,7 +79,6 @@ CREATE TABLE public.training (
 CREATE VIEW public.training_full AS
  SELECT participants.s_name,
     participants.f_name,
-    participants.rank,
     trainers.s_name AS trainer_s_name,
     trainers.f_name AS trainer_f_name
    FROM ((public.training

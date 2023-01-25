@@ -118,8 +118,7 @@ public class AddRecordDialog {
                             new Trainer(
                                     date,
                                     trainerLNameField.getText(),
-                                    trainerFNameField.getText(),
-                                    trainerRankField.getText()
+                                    trainerFNameField.getText()
                             )
                     );
                 }

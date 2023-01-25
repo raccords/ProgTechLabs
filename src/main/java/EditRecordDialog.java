@@ -147,7 +147,6 @@ public class EditRecordDialog {
         //JDatePicker может только так
         trainerFNameField.setText(trainer.f_name);
         trainerLNameField.setText(trainer.s_name);
-        trainerRankField.setText(trainer.rank);
     }
 
     public void updateTrainingFields() {
@@ -208,7 +207,6 @@ public class EditRecordDialog {
                                     date,
                                     participantFNameField.getText(),
                                     participantLNameField.getText(),
-                                    participantRankField.getText(),
                                     Trainers.get(participantParticipantComboBox.getSelectedIndex()).pk_trainer)
                     );
                 }

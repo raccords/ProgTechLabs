@@ -1,0 +1,2 @@
+ALTER TABLE public.participants
+    ALTER COLUMN rank TYPE character varying(60) COLLATE pg_catalog."default";

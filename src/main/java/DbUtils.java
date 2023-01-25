@@ -67,7 +67,6 @@ public class DbUtils {
         statement.setDate(1, trainer.birthDate);
         statement.setString(2, trainer.f_name);
         statement.setString(3, trainer.s_name);
-        statement.setString(4, trainer.rank);
         statement.execute();
     }
 
@@ -76,8 +75,6 @@ public class DbUtils {
         statement.setDate(1, trainer.birthDate);
         statement.setString(2, trainer.f_name);
         statement.setString(3, trainer.s_name);
-        statement.setString(4, trainer.rank);
-        statement.setInt(5, trainer.pk_trainer);
         statement.execute();
     }
 
@@ -146,7 +143,6 @@ public class DbUtils {
         var statement = con.prepareStatement("SELECT trainers.birth_date,\n" +
                 "    trainers.f_name,\n" +
                 "    trainers.s_name,\n" +
-                "    trainers.rank,\n" +
                 "    trainers.trainer_id\n" +
                 "   FROM trainers;");
         ArrayList<Trainer> trainers = new ArrayList<Trainer>();
@@ -156,8 +152,7 @@ public class DbUtils {
                             result.getDate(1),
                             result.getString(2),
                             result.getString(3),
-                            result.getString(4),
-                            result.getInt(5)
+                            result.getInt(4)
                     )
             );
         }
