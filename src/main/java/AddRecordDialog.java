@@ -44,6 +44,7 @@ public class AddRecordDialog {
     private JComboBox participantResultComboBox;
     private JTextField scoreResultField;
     private JDatePickerImpl resultDatePickerImpl;
+    private JTextField particiantMName;
 
     public AddRecordDialog(DbUtils dbUtil, ActionListener closeListener) {
         this.dbUtils = dbUtil;
@@ -101,6 +102,7 @@ public class AddRecordDialog {
                                     date,
                                     participantFName.getText(),
                                     participantLName.getText(),
+                                    particiantMName.getText(),
                                     participantRank.getText())
                     );
                 }

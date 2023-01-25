@@ -40,30 +40,32 @@ public class DbUtils {
 
     public void insertParticipant(Participant participant) throws SQLException {
 
-        var statement = con.prepareStatement("INSERT INTO participants (height, weight, birth_date, f_name, s_name, rank) VALUES (?,?,?,?,?,?)");
+        var statement = con.prepareStatement("CALL insert_participant(?,?,?,?,?,?,?)");
         statement.setInt(1, participant.height);
         statement.setInt(2, participant.weight);
         statement.setDate(3, participant.birthDate);
         statement.setString(4, participant.f_name);
         statement.setString(5, participant.s_name);
-        statement.setString(6, participant.rank);
+        statement.setString(6, participant.m_name);
+        statement.setString(7, participant.rank);
         statement.execute();
     }
 
     public void updateParticipant(Participant participant) throws SQLException {
-        var statement = con.prepareStatement("UPDATE participants SET height = ?, weight =? , birth_date= ?, f_name= ?, s_name= ?, rank=? WHERE participant_id = ?");
+        var statement = con.prepareStatement("UPDATE participants SET height = ?, weight =? , birth_date= ?, f_name= ?, s_name= ?, m_name =?, rank=? WHERE participant_id = ?");
         statement.setInt(1, participant.height);
         statement.setInt(2, participant.weight);
         statement.setDate(3, participant.birthDate);
         statement.setString(4, participant.f_name);
         statement.setString(5, participant.s_name);
-        statement.setString(6, participant.rank);
-        statement.setInt(7, participant.pk_participant);
+        statement.setString(6, participant.m_name);
+        statement.setString(7, participant.rank);
+        statement.setInt(8, participant.pk_participant);
         statement.execute();
     }
 
     public void insertTrainer(Trainer trainer) throws SQLException {
-        var statement = con.prepareStatement("INSERT INTO trainers (birth_date, f_name, s_name, rank) VALUES (?,?,?,?)");
+        var statement = con.prepareStatement("CALL insert_trainer (?,?,?,?)");
         statement.setDate(1, trainer.birthDate);
         statement.setString(2, trainer.f_name);
         statement.setString(3, trainer.s_name);
@@ -75,11 +77,12 @@ public class DbUtils {
         statement.setDate(1, trainer.birthDate);
         statement.setString(2, trainer.f_name);
         statement.setString(3, trainer.s_name);
+        statement.setInt(4, trainer.pk_trainer);
         statement.execute();
     }
 
     public void insertTraining(Training training) throws SQLException {
-        var statement = con.prepareStatement("INSERT INTO training (trainer_id, participant_id) VALUES (?,?)");
+        var statement = con.prepareStatement("CALL insert_training (?,?)");
         statement.setInt(1, training.fk_trainer);
         statement.setInt(2, training.fk_participant);
         statement.execute();
@@ -94,7 +97,7 @@ public class DbUtils {
     }
 
     public void insertResult(Result result) throws SQLException {
-        var statement = con.prepareStatement("INSERT INTO results (date, participant_id, score) VALUES (?,?,?)");
+        var statement = con.prepareStatement("CALL insert_result(?, ?, ?)");
         statement.setDate(1, result.date);
         statement.setInt(2, result.fk_participant);
         statement.setInt(3, result.score);
@@ -117,6 +120,7 @@ public class DbUtils {
                 "    participants.birth_date,\n" +
                 "    participants.f_name,\n" +
                 "    participants.s_name,\n" +
+                "    participants.m_name,\n" +
                 "    participants.rank,\n" +
                 "    participants.participant_id\n" +
                 "    FROM participants;");
@@ -131,7 +135,8 @@ public class DbUtils {
                             result.getString(4),
                             result.getString(5),
                             result.getString(6),
-                            result.getInt(7)
+                            result.getString(7),
+                            result.getInt(8)
                     )
             );
             i++;

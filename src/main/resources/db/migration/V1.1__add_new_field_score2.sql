@@ -1,13 +1,19 @@
-ALTER TABLE IF EXISTS public.results
-    ADD COLUMN secondary_score integer;
+ALTER TABLE IF EXISTS public.participants
+    ADD COLUMN m_name character varying(120)
 
-CREATE OR REPLACE VIEW public.results_full
+DROP VIEW public.participants_full;
+
+CREATE OR REPLACE VIEW public.participants_full
     AS
-     SELECT results.date,
-    participants.f_name,
+     SELECT participants.birth_date,
+    participants.height,
+    participants.weight,
     participants.s_name,
-    results.participant_id,
-    results.score,
-	results.secondary_score
-   FROM results
-     LEFT JOIN participants ON participants.participant_id = results.participant_id;
+    participants.rank,
+    participants.f_name,
+    participants.m_name,
+    participants.participant_id
+   FROM participants;
+
+ALTER TABLE public.participants_full
+    OWNER TO postgres;

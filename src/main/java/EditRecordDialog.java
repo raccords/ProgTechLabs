@@ -51,6 +51,7 @@ public class EditRecordDialog {
     private JComboBox trainerTrainerComboBox;
     private JComboBox trainingTrainingComboBox;
     private JComboBox resultResultComboBox;
+    private JTextField participantMNameField;
 
 
     public EditRecordDialog(DbUtils dbUtil, ActionListener closeListener) {
@@ -136,6 +137,7 @@ public class EditRecordDialog {
         //JDatePicker может только так
         participantFNameField.setText(participant.f_name);
         participantLNameField.setText(participant.s_name);
+        participantMNameField.setText(participant.m_name);
         participantRankField.setText(participant.rank);
     }
 
@@ -188,6 +190,7 @@ public class EditRecordDialog {
                                     date,
                                     participantFNameField.getText(),
                                     participantLNameField.getText(),
+                                    participantMNameField.getText(),
                                     participantRankField.getText(),
                                     Participants.get(participantParticipantComboBox.getSelectedIndex()).pk_participant)
                     );
