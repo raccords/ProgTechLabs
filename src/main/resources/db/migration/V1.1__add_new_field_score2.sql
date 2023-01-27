@@ -1,7 +1,7 @@
 ALTER TABLE IF EXISTS public.participants
     ADD COLUMN m_name character varying(120)
 
-DROP VIEW public.participants_full;
+DROP VIEW public.participants_full CASCADE;
 
 CREATE OR REPLACE VIEW public.participants_full
     AS
