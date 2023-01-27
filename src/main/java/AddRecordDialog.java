@@ -140,7 +140,7 @@ public class AddRecordDialog {
                     }
                     var date = new java.sql.Date(((Date) participantBirthDatePicker.getModel().getValue()).getTime());
                     var result = new Result(
-                            Participants.get(participantTrainingComboBox.getSelectedIndex()).pk_participant,
+                            Participants.get(participantResultComboBox.getSelectedIndex()).pk_participant,
                             Integer.parseInt(scoreResultField.getText()),
                             date
                     );
