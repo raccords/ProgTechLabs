@@ -1,3 +1,5 @@
+DROP VIEW public.trainers_full;
+
 CREATE OR REPLACE VIEW public.trainers_full
     AS
      SELECT trainers.trainer_id,
