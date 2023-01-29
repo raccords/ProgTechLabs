@@ -1,5 +1,3 @@
-DROP VIEW public.training_full;
-
 CREATE OR REPLACE VIEW public.training_full
     AS
      SELECT participants.s_name,
